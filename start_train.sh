@@ -1,0 +1,1 @@
+nohup python -u glm4_lora_train.py >> log.out 2>&1 &

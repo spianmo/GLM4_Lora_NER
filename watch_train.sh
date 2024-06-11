@@ -1,0 +1,1 @@
+tail -f 10 log.out
