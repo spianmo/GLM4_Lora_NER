@@ -24,7 +24,7 @@ def process_val_dataset(file_path: str):
 if __name__ == '__main__':
     mode_path = './ZhipuAI/glm-4-9b-chat'
     lora_path = './GLM4_lora'
-    val_dataset_path = './val.iob2'
+    val_dataset_path = './sampletest3.iob2'
 
     # 加载tokenizer
     tokenizer = AutoTokenizer.from_pretrained(mode_path, trust_remote_code=True)
@@ -52,4 +52,6 @@ if __name__ == '__main__':
         with torch.no_grad():
             outputs = model.generate(**inputs, **gen_kwargs)
             outputs = outputs[:, inputs['input_ids'].shape[1]:]
-            print(tokenizer.decode(outputs[0], skip_special_tokens=True))
+            # 打开文件output.txt，将输出结果写入文件
+            with open('output.txt', 'a', encoding='utf-8') as f:
+                f.write(tokenizer.decode(outputs[0], skip_special_tokens=True) + '\n')

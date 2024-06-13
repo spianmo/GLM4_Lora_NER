@@ -65,7 +65,7 @@ def process_dataset(file_path: str, output_file: str):
 
 
 if __name__ == '__main__':
-    input_file = "./train.iob2"
+    input_file = "./Genia4ERtask1.iob2"
     output_file = "./dataset_train.json"
     glm4_model_path = './ZhipuAI/glm-4-9b-chat'
     lora_path = './GLM4_lora'
