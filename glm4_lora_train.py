@@ -106,7 +106,8 @@ if __name__ == '__main__':
         save_steps=100,
         learning_rate=1e-5,
         save_on_each_node=True,
-        gradient_checkpointing=True
+        gradient_checkpointing=True,
+        optim="paged_adamw_32bit"
     )
 
     trainer = Trainer(
