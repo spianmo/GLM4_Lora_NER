@@ -33,6 +33,8 @@ if __name__ == '__main__':
     model = AutoModelForCausalLM.from_pretrained(mode_path, device_map="auto", torch_dtype=torch.bfloat16,
                                                  trust_remote_code=True).eval()
 
+    model = model.half().cuda()
+
     # 加载lora权重
     model = PeftModel.from_pretrained(model, model_id=lora_path)
 
