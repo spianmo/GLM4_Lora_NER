@@ -8,9 +8,9 @@ import json
 import pandas as pd
 import torch
 from datasets import Dataset
-from peft import LoraConfig, TaskType, get_peft_model
 from transformers import AutoTokenizer, AutoModelForCausalLM, TrainingArguments
 from transformers import DataCollatorForSeq2Seq, Trainer
+from peft import PromptEncoderConfig, TaskType, get_peft_model, PromptEncoderReparameterizationType
 
 from prompt import prompt
 
@@ -84,14 +84,11 @@ if __name__ == '__main__':
                                                  trust_remote_code=True)
     model.enable_input_require_grads()  # 开启梯度检查点
 
-    config = LoraConfig(
-        task_type=TaskType.CAUSAL_LM,
-        target_modules=["query_key_value", "dense", "dense_h_to_4h", "dense_4h_to_h"],  # 现存问题只微调部分演示即可
-        inference_mode=False,  # 训练模式
-        r=8,  # Lora 秩
-        lora_alpha=32,  # Lora alaph，具体作用参见 Lora 原理
-        lora_dropout=0.1  # Dropout 比例
-    )
+    #  loraConfig
+    config = PromptEncoderConfig(
+        task_type=TaskType.CAUSAL_LM, num_virtual_tokens=10,
+        encoder_reparameterization_type=PromptEncoderReparameterizationType.MLP,
+        encoder_dropout=0.1, encoder_num_layers=5, encoder_hidden_size=1024)
 
     model = get_peft_model(model, config)
     model.print_trainable_parameters()
@@ -106,7 +103,7 @@ if __name__ == '__main__':
         save_steps=100,
         learning_rate=1e-5,
         save_on_each_node=True,
-        gradient_checkpointing=True
+        # gradient_checkpointing=True
     )
 
     trainer = Trainer(
