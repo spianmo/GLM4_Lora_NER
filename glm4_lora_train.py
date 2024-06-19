@@ -10,7 +10,7 @@ import torch
 from datasets import Dataset
 from transformers import AutoTokenizer, AutoModelForCausalLM, TrainingArguments
 from transformers import DataCollatorForSeq2Seq, Trainer
-from peft import TaskType, get_peft_model, PrefixTuningConfig
+from peft import TaskType, get_peft_model, IA3Config
 
 from prompt import prompt
 
@@ -85,7 +85,7 @@ if __name__ == '__main__':
     model.enable_input_require_grads()  # 开启梯度检查点
 
     #  loraConfig
-    config = PrefixTuningConfig(task_type=TaskType.CAUSAL_LM, num_virtual_tokens=10, prefix_projection=True)
+    config = IA3Config(task_type=TaskType.CAUSAL_LM)
 
     model = get_peft_model(model, config)
     model.print_trainable_parameters()
