@@ -80,7 +80,7 @@ if __name__ == '__main__':
     tokenized_id = ds.map(process_func, remove_columns=ds.column_names)
 
     model = AutoModelForCausalLM.from_pretrained(glm4_model_path,
-                                                 torch_dtype=torch.half, load_in_8bit=True, device_map="sequential",
+                                                 torch_dtype=torch.float32, load_in_8bit=True, device_map="sequential",
                                                  trust_remote_code=True)
     model.enable_input_require_grads()  # 开启梯度检查点
 
