@@ -54,4 +54,6 @@ if __name__ == '__main__':
             outputs = outputs[:, inputs['input_ids'].shape[1]:]
             # 打开文件output.txt，将输出结果写入文件
             with open('output.txt', 'a', encoding='utf-8') as f:
-                f.write(tokenizer.decode(outputs[0], skip_special_tokens=True) + '\n')
+                result = tokenizer.decode(outputs[0], skip_special_tokens=True) + '\n'
+                print(result)
+                f.write(result)
