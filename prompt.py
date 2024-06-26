@@ -1,8 +1,11 @@
 prompt = """
-NER Extraction
-Input: <sentence>
-Please extract all entities mentioned in the sentence about chemicals/genes/diseases.
-Answer in IOB format commonly used in NER tasks.
-BIO tagging scheme is used in this task.
-The Beginning and Inside in the IOB format need to be followed by a specific entity type.
+Document Classification
+Input: <document>
+
+Document Classification is a procedure of assigning one or more
+pre-defined labels to a document. Evaluation for this task was
+done at the document level, i.e. aggregating labels across all
+sentences within a document. 
+
+The correct category for this document is ? 
 """

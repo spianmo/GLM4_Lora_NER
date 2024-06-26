@@ -37,40 +37,31 @@ def process_func(example):
     }
 
 
-def process_dataset(file_path: str, output_file: str):
+def read_file_content(file_path: str):
+    with open(file_path, "r", encoding="utf-8") as f:
+        return f.read()
+
+
+def process_dataset(output_file: str):
+    # 遍历text目录底下的所有文件
+    file_path = "./tran/text"
     dataset = []
-    with open(file_path, "r", encoding="utf-8") as file:
-        lines = file.readlines()
-        word_list = ""
-        tag_list = ""
-        raw_list = ""
-        for line in lines:
-            line = line.strip()
-            if line:  # 非空行
-                word, tag = line.split("\t")  # 分割词和标签
-                word_list += word + " "
-                tag_list += tag + " "
-                raw_list += line + "\n"
-            else:
-                dataset.append({
-                    "input": word_list,
-                    "output": raw_list
-                })
-                word_list = ""
-                tag_list = ""
-                raw_list = ""
+    for file in os.listdir(file_path):
+        dataset.append({
+            "input": read_file_content(file_path + "/" + file),
+            "output": read_file_content("./val/labels" + "/" + file)
+        })
     # 保存数据集
     with open(output_file, "w", encoding="utf-8") as file:
         file.write(json.dumps(dataset, ensure_ascii=False) + "\n")
 
 
 if __name__ == '__main__':
-    input_file = "./Genia4ERtask1.iob2"
     output_file = "./dataset_train.json"
     glm4_model_path = './ZhipuAI/glm-4-9b-chat'
     lora_path = './GLM4_lora'
 
-    process_dataset(input_file, output_file)
+    process_dataset(output_file)
     df = pd.read_json(output_file)
     ds = Dataset.from_pandas(df)
 
