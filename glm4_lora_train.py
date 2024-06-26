@@ -44,12 +44,12 @@ def read_file_content(file_path: str):
 
 def process_dataset(output_file: str):
     # 遍历text目录底下的所有文件
-    file_path = "./tran/text"
+    file_path = "./train/text"
     dataset = []
     for file in os.listdir(file_path):
         dataset.append({
             "input": read_file_content(file_path + "/" + file),
-            "output": read_file_content("./val/labels" + "/" + file)
+            "output": read_file_content("./train/labels" + "/" + file)
         })
     # 保存数据集
     with open(output_file, "w", encoding="utf-8") as file:
