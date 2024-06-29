@@ -71,7 +71,7 @@ if __name__ == '__main__':
     tokenized_id = ds.map(process_func, remove_columns=ds.column_names)
 
     model = AutoModelForCausalLM.from_pretrained(glm4_model_path,
-                                                 device_map="cuda:0", torch_dtype=torch.bfloat16,
+                                                 torch_dtype=torch.float32, load_in_8bit=True, device_map="sequential",
                                                  trust_remote_code=True)
     model.enable_input_require_grads()  # 开启梯度检查点
 
@@ -97,7 +97,8 @@ if __name__ == '__main__':
         save_steps=100,
         learning_rate=1e-5,
         save_on_each_node=True,
-        gradient_checkpointing=True
+        gradient_checkpointing=True,
+        optim="paged_adamw_32bit"
     )
 
     trainer = Trainer(

@@ -32,7 +32,8 @@ if __name__ == '__main__':
     tokenizer = AutoTokenizer.from_pretrained(mode_path, trust_remote_code=True)
 
     # 加载模型
-    model = AutoModelForCausalLM.from_pretrained(mode_path, device_map="auto", torch_dtype=torch.bfloat16,
+    model = AutoModelForCausalLM.from_pretrained(mode_path, torch_dtype=torch.float32, load_in_8bit=True,
+                                                 device_map="auto",
                                                  trust_remote_code=True).eval()
 
     # 加载lora权重
